@@ -1,8 +1,5 @@
 import db from '../config/mySQL_DB.js'
-import fs, { createReadStream } from 'fs'
-import ftpClient from '../config/ftpConfig.js';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import {uplaodToS3, deleteFromS3} from '../services/FilesOperation.js'
 
 const fields = 'id, emp_name, department, designation, email, gender, phone, address, country, state, city, address2, dob, joining_date, basic_salary, emp_status, service_terms, emp_image, emp_cv, total_leave, login_email, role, certificates, created_by, updated_at FROM employees'
 export const createEmployee = async (req, res) => {
@@ -143,21 +140,12 @@ export const deleteEmployee = async (req, res) => {
 
 
 export const uploadFiles = async (req, res) => {
-        
     try {
         const filesUrl = [];
         for (let i = 0; i < req.files.length; i++) {
-           
-            const { path, originalname, mimetype,  filename} = req.files[i];
-            const arr = originalname.split('.');
-            const newName = Date.now() + '.' + arr[arr.length - 1];
-            const readStream = createReadStream(path);
-            await ftpClient.uploadFrom(readStream, '/'+ newName).then((res)=>{
-                filesUrl.push(newName);
-	            
-            }).catch((err)=>{
-                throw new Error(err);
-            })
+            const { originalname, mimetype, buffer } = req.files[i];
+            const url = await uplaodToS3(buffer, originalname, mimetype);
+            filesUrl.push(url);
         }
         res.send(filesUrl);
 
@@ -173,7 +161,7 @@ export const deletFTPfile = async (req, res) => {
     const field = req.query.field;
     try {
         console.log(filename, id, field)
-        await ftpClient.remove(filename).then((response)=>{
+        await deleteFromS3(filename).then((response)=>{
             if(id !== 'undefined'){
                 db.query(`SELECT ${field} FROM employees WHERE id = ?`, [id], (err, result) => {
                     if (err) {
@@ -237,5 +225,3 @@ export const getEmployeeByName = async(req, res)=>{
         res.status(500).json({ error: 'Internal server error' });
     }
 }
-
-// https://vimpexltd.com/vimpexltd.com/principles/

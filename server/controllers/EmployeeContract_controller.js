@@ -1,8 +1,5 @@
 import db from '../config/mySQL_DB.js'
-import fs, { createReadStream } from 'fs'
-import ftpClient from '../config/ftpConfig.js';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import {uplaodToS3, deleteFromS3} from '../services/FilesOperation.js'
 
 export const createEmployeeContract = async (req, res) => {
     const fields = req.body;
@@ -134,22 +131,12 @@ export const deleteEmployeeContract = async (req, res) => {
 
 
 export const uploadFiles = async (req, res) => {
-        
     try {
         const filesUrl = [];
         for (let i = 0; i < req.files.length; i++) {
-           
-            const { path, originalname, mimetype,  filename} = req.files[i];
-            const arr = originalname.split('.');
-            const newName = Date.now() + '.' + arr[arr.length - 1];
-            const readStream = createReadStream(path);
-            await ftpClient.uploadFrom(readStream, '/'+ newName).then((res)=>{
-                filesUrl.push(newName);
-                console.log(res);
-	            
-            }).catch((err)=>{
-                throw new Error(err);
-            })
+            const { originalname, mimetype, buffer } = req.files[i];
+            const url = await uplaodToS3(buffer, originalname, mimetype);
+            filesUrl.push(url);
         }
         res.send(filesUrl);
 
@@ -163,7 +150,7 @@ export const deletFTPfile = async (req, res) => {
     const filename = req.params.fname
     const id = req.query.id
     try {
-        await ftpClient.remove(filename).then((response)=>{
+        await deleteFromS3(filename).then((response)=>{
             if(id !== 'undefined'){
                 db.query('SELECT contract_attachment FROM employee_contract WHERE id = ?', [id], (err, result) => {
                     if (err) {
@@ -202,5 +189,3 @@ export const deletFTPfile = async (req, res) => {
     }
 }
 
-
-// https://vimpexltd.com/vimpexltd.com/principles/

@@ -1,10 +1,8 @@
 import db from '../config/mySQL_DB.js'
-import fs from 'fs'
+import {uplaodToS3, deleteFromS3} from '../services/FilesOperation.js'
+
 import sendEmail from '../services/Send_mail.js'
-import ftpClient from '../config/ftpConfig.js';
-import path, { dirname } from 'path';
-import { resolve } from 'path'
-import { rejects } from 'assert'
+import fs from 'fs'
 import cheerio from 'cheerio';
 
 const uploadFiles = (files)=>{
@@ -15,7 +13,7 @@ const uploadFiles = (files)=>{
             const filename = `image_${Date.now()}.png`;
             fs.writeFileSync(filename, imageData, 'base64');
 
-            await ftpClient.uploadFrom(filename, '/'+ filename).then((res)=>{
+            await uplaodToS3(filename, '/'+ filename).then((res)=>{
                 filesUrl.push(`https://superdolphins.com/superdolphins.com/superdolphinsltd/${filename}`);
                 fs.unlinkSync(filename);
             }).catch((err)=>{
