@@ -149,7 +149,6 @@ export const login = async (req, res) => {
     });
 }
 
-
 export const profile = async (req, res) => {
     const { token } = req.body;
     try {

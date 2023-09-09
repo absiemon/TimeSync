@@ -8,16 +8,12 @@ import { Home } from './pages';
 import './App.css';
 
 import { useStateContext } from './contexts/ContextProvider';
-import Login from './pages/auth/Login';
-// import Employees from './pages/employees/Employees';
-// import EmployeesForm from './pages/employees/EmployeesForm';
+import Login from './pages/auth/Login2';
 import { Spin, message } from 'antd';
 import LoadingPage from './LoadingPage';
 import axios from 'axios';
 import Profile2 from './pages/profile/Profile2';
 import Profile3 from './pages/profile/Profile3';
-// import Designation from './pages/desingnation/Designation';
-// import DesignationForm from './pages/desingnation/DesignationForm';
 import LeaveStatus from './pages/employeeLeave/LeaveStatus';
 import LeaveForm from './pages/employeeLeave/LeaveForm';
 import LeaveRequest from './pages/employeeLeave/LeaveRequest';
@@ -52,7 +48,7 @@ const ProposalForm = lazy(() => import('./pages/proposal/ProposalForm'))
 
 const App = () => {
   const { setUser, user } = useStateContext()
-  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
+  const { currentMode, activeMenu, themeSettings } = useStateContext();
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -74,15 +70,6 @@ const App = () => {
     }
 
   }, [])
-
-  useEffect(() => {
-    const currentThemeColor = localStorage.getItem('colorMode');
-    const currentThemeMode = localStorage.getItem('themeMode');
-    if (currentThemeColor && currentThemeMode) {
-      setCurrentColor(currentThemeColor);
-      setCurrentMode(currentThemeMode);
-    }
-  }, []);
 
   return (
     <>

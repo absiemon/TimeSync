@@ -3,14 +3,12 @@ import "./login2.css";
 import { SiShopware } from "react-icons/si";
 import { HiOutlineEnvelope } from "react-icons/hi2";
 import { IoLockOpenOutline } from "react-icons/io5";
-// import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { useStateContext } from "../../contexts/ContextProvider";
 import {  notification } from 'antd';
 
 const Login2 = () => {
 
-//   const { dispatch } = useContext(AuthContext);
 
     const { setUser } = useStateContext();
     // --------------[States]---------------
@@ -32,22 +30,18 @@ const Login2 = () => {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-    //   dispatch({ type: "LOGIN_START" });
-      // setFetch(true);
+
       try {
         const res = await axios.post(
           "http://localhost:8000/api/auth/login",
           { email, password }
         );
-        // dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
         setUser(res.data);
 
         localStorage.setItem("user", JSON.stringify(res.data));
         window.location.reload();
       } catch (err) {
         openNotificationWithIcon('error')
-        // dispatch({ type: "LOGIN_FAILURE" });
-        // setFetch(false);
       }
     };
 
@@ -74,22 +68,13 @@ const Login2 = () => {
                 <div>
                   <div style={{ marginBottom: "2rem" }}>
                     <h1 className="display-3 text-white login_left-h1">
-                      Multiple Niches
-                    </h1>
-                    <h1 className="display-3 text-white login_left-h1">
-                      Ready for Your Project
+                      Time Sync
                     </h1>
                   </div>
                   <p className="h6 text-white lh-1-5 mb-5 login_left-p">
-                    Dynamically target high-payoff intellectual capital for
-                    customized technologies. Objectively integrate emerging core
-                    competencies before process-centric communities...
+                    This is a best too for managing employee information
+                    and their activity.
                   </p>
-                  <div style={{ marginBottom: "2rem" }}>
-                    <a className="login_left-btn" href="index.html">
-                      Learn More
-                    </a>
-                  </div>
                 </div>
               </div>
             </div>
@@ -103,7 +88,7 @@ const Login2 = () => {
                 <div class="sh-11 login_right-logo">
                   <div className="login_right-logo-a">
                     <SiShopware className="login_right-logo-icon" />{" "}
-                    <span>DigitalIpsum</span>
+                    <span>Time Sync</span>
                   </div>
                 </div>
                 <div style={{ marginBottom: "2rem" }}>

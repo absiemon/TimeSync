@@ -1,6 +1,4 @@
 import db from '../config/mySQL_DB.js'
-import fs, { createReadStream } from 'fs'
-import ftpClient from '../config/ftpConfig.js';
 import moment from 'moment'
 
 
