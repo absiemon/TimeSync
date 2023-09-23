@@ -156,34 +156,36 @@ export const profile = async (req, res) => {
             const secret = process.env.JWT_SECRET;
             jwt.verify(token, secret, async (err, data) => {
                 if (err) {
-                    res.status(401).json({ error: err });
+                    res.status(401).json({ error: "Token expired. Please log in again." });
                 }
-                const id = data?.id;
-                db.query('SELECT * FROM employees WHERE id=?', [id], (error, results) => {
-                    if (results.length === 0) {
-                        return res.status(401).json({ error: 'Unauthorized access.' });
-                    }
-                    else {
-                        const data2 = results[0];
-                        const response = {
-                            id: data2.id,
-                            emp_name: data2.emp_name,
-                            email: data2.login_email,
-                            role: data2.role,
-                            emp_image: data2.emp_image,
-                            time_stamp: data2.time_stamp
+                else{
+                    const id = data?.id;
+                    db.query('SELECT * FROM employees WHERE id=?', [id], (error, results) => {
+                        if (error) {
+                            return res.status(401).json({ error: 'Unauthorized access.' });
                         }
-                        return res.status(200).json(response);
-                    }
-                })
+                        else {
+                            const data2 = results[0];
+                            const response = {
+                                id: data2.id,
+                                emp_name: data2.emp_name,
+                                email: data2.login_email,
+                                role: data2.role,
+                                emp_image: data2.emp_image,
+                                time_stamp: data2.time_stamp
+                            }
+                            return res.status(200).json(response);
+                        }
+                    })
+                }
             })
         }
         else {
-            res.json(null);
+            return res.json(null);
         }
     }
     catch (err) {
-        res.status(422).json(err);
+        return res.status(422).json(err);
     }
 }
 

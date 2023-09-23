@@ -49,14 +49,10 @@ const Navbar = () => {
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
   return (
-    <div className="flex justify-between relative" style={{padding:"13px 20px"}}>
+    <div className="flex justify-between relative" style={{padding:"13px 20px", height:'70px'}}>
 
       <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
-      {/* <div className="flex">
-        <h2>John Doe</h2> <br />
-        <span>App Admin</span>
-      </div> */}
-      <ProfileMenu/>
+        <ProfileMenu/>
     </div>
   );
 };

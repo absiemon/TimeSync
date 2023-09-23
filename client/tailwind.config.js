@@ -14,6 +14,7 @@ module.exports = {
         primary: '#CCCCCC',
         secondary:'#6c757d',
         main: '#03C9D7',
+        myblack:'#1c1f26',
       },
       backgroundColor: {
         'main-bg': '#FAFBFB',

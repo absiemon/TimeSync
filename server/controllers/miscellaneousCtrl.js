@@ -53,7 +53,6 @@ export const allData = async(req, res)=>{
             })
         })
     } catch (error) {
-        console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     }
 }

@@ -29,25 +29,16 @@ const Sidebar = () => {
   const normalLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 text-md text-gray-700 dark:text-gray-200 m-2 br-2';
 
   return (
-    <div className="h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10" style={{ background: "#252932" }}>
+    <div className="h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 " style={{ background: "#252932" }}>
       {activeMenu && (
         <>
-          <div className="flex justify-between items-center" style={{ background: "#2b303b", paddingLeft: "10px", paddingTop: "2px" }}>
+          <div className="flex justify-between items-center fixed pl-2.5 " style={{ background: "#2b303b", width:'17vw', height:'70px'}}>
             <Link to="/" onClick={handleCloseSideBar} className="items-center gap-3 ml-3 mt-5 mb-5 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900">
               <SiShopware /> <span>Time Sync</span>
             </Link>
-            <TooltipComponent content="Menu" position="BottomCenter">
-              <button
-                type="button"
-                onClick={() => setActiveMenu(!activeMenu)}
-                style={{ color: currentColor }}
-                className="text-xl rounded-full p-3 hover:bg-light-gray mt-4 block md:hidden"
-              >
-                <MdOutlineCancel />
-              </button>
-            </TooltipComponent>
           </div>
-          <div className="mt-8" style={{ paddingLeft: "10px" }}>
+
+          <div className="mt-24" >
 
             <NavLink
               to={`/`}
@@ -57,7 +48,7 @@ const Sidebar = () => {
               className={({ isActive }) => (isActive ? activeLink : normalLink)}
             >
               <span className='p-2 bg-myblack rounded-sm'><LuLayoutDashboard style={{ fontSize: "20px" }} /></span>
-              <span className="capitalize text-primary">Home</span>
+              <span className={`capitalize text-sm ${location.pathname==='/' ? "text-myblack" : "text-primary"}`}>Home</span>
             </NavLink>
 
             {user && user.role === 'admin' && <NavLink
@@ -68,7 +59,7 @@ const Sidebar = () => {
               className={({ isActive }) => (isActive ? activeLink : normalLink)}
             >
               <span className='p-2 bg-myblack rounded-sm'><FiUsers style={{ fontSize: "20px" }} /></span>
-              <span className="capitalize text-primary">All Employees</span>
+              <span className={`capitalize text-sm ${location.pathname==='/employee' ? "text-myblack" : "text-primary"}`}>All Employees</span>
             </NavLink>}
 
             {user && user.role === 'admin' && <NavLink
@@ -79,7 +70,7 @@ const Sidebar = () => {
               className={({ isActive }) => (isActive ? activeLink : normalLink)}
             >
               <span className='p-2 bg-myblack rounded-sm'><AiOutlineUser style={{ fontSize: "20px" }} /></span>
-              <span className="capitalize text-primary">Designation</span>
+              <span className={`capitalize text-sm ${location.pathname==='/employee/designation' ? "text-myblack" : "text-primary"}`}>Designation</span>
             </NavLink>}
 
             {user && user.role === 'admin' && <NavLink
@@ -90,7 +81,7 @@ const Sidebar = () => {
               className={({ isActive }) => (isActive ? activeLink : normalLink)}
             >
               <span className='p-2 bg-myblack rounded-sm'><LuBriefcase style={{ fontSize: "20px" }} /></span>
-              <span className="capitalize text-primary">Departments</span>
+              <span className={`capitalize text-sm ${location.pathname==='/employee/department' ? "text-myblack" : "text-primary"}`}>Departments</span>
             </NavLink>}
 
 
@@ -102,7 +93,7 @@ const Sidebar = () => {
               className={({ isActive }) => (isActive ? activeLink : normalLink)}
             >
               <span className='p-2 bg-myblack rounded-sm'><BsStopwatch style={{ fontSize: "20px" }} /></span>
-              <span className="capitalize text-primary">Leave Status</span>
+              <span className={`capitalize text-sm ${location.pathname==='/leave/status' ? "text-myblack" : "text-primary"}`}>Leave Status</span>
             </NavLink>
 
             <NavLink
@@ -113,7 +104,7 @@ const Sidebar = () => {
               className={({ isActive }) => (isActive ? activeLink : normalLink)}
             >
               <span className='p-2 bg-myblack rounded-sm'><BsStopwatch style={{ fontSize: "20px" }} /></span>
-              <span className="capitalize text-primary">Leave Request</span>
+              <span className={`capitalize text-sm ${location.pathname==='/leave/requests' ? "text-myblack" : "text-primary"}`}>Leave Request</span>
             </NavLink>
 
             <NavLink
@@ -124,7 +115,7 @@ const Sidebar = () => {
               className={({ isActive }) => (isActive ? activeLink : normalLink)}
             >
               <span className='p-2 bg-myblack rounded-sm'><LuCalendarCheck style={{ fontSize: "20px" }} /></span>
-              <span className="capitalize text-primary">Attendance lists</span>
+              <span className={`capitalize text-sm ${location.pathname==='/attendance/lists' ? "text-myblack" : "text-primary"}`}>Attendance lists</span>
             </NavLink>
 
             {user && user.role === 'admin' &&
@@ -136,7 +127,7 @@ const Sidebar = () => {
                 className={({ isActive }) => (isActive ? activeLink : normalLink)}
               >
                 <span className='p-2 bg-myblack rounded-sm'><TfiAnnouncement style={{ fontSize: "20px" }} /></span>
-                <span className="capitalize text-primary"> Announcements</span>
+                <span className={`capitalize text-sm ${location.pathname==='/announcement' ? "text-myblack" : "text-primary"}`}> Announcements</span>
               </NavLink>}
 
             <NavLink
@@ -147,7 +138,7 @@ const Sidebar = () => {
               className={({ isActive }) => (isActive ? activeLink : normalLink)}
             >
               <span className='p-2 bg-myblack rounded-sm'><RiExchangeDollarFill style={{ fontSize: "20px" }} /></span>
-              <span className="capitalize text-primary"> Pipeline</span>
+              <span className={`capitalize text-sm ${location.pathname==='/pipeline' ? "text-myblack" : "text-primary"}`}> Pipeline</span>
             </NavLink>
 
             <NavLink
@@ -158,7 +149,7 @@ const Sidebar = () => {
               className={({ isActive }) => (isActive ? activeLink : normalLink)}
             >
               <span className='p-2 bg-myblack rounded-sm'><BiDollarCircle style={{ fontSize: "20px" }} /></span>
-              <span className="capitalize text-primary"> Pipeline View</span>
+              <span className={`capitalize text-sm ${location.pathname==='/pipeline/view' ? "text-myblack" : "text-primary"}`}> Pipeline View</span>
             </NavLink>
 
 
@@ -170,7 +161,7 @@ const Sidebar = () => {
               className={({ isActive }) => (isActive ? activeLink : normalLink)}
             >
               <span className='p-2 bg-myblack rounded-sm'><FiUsers style={{ fontSize: "20px" }} /></span>
-              <span className="capitalize text-primary"> Persons</span>
+              <span className={`capitalize text-sm ${location.pathname==='/persons' ? "text-myblack" : "text-primary"}`}> Persons</span>
             </NavLink>
 
             <NavLink
@@ -182,7 +173,7 @@ const Sidebar = () => {
               className={({ isActive }) => (isActive ? activeLink : normalLink)}
             >
               <span className='p-2 bg-myblack rounded-sm'><LuBriefcase style={{ fontSize: "20px" }} /></span>
-              <span className="capitalize text-primary">Organization</span>
+              <span className={`capitalize text-sm ${location.pathname==='/organization' ? "text-myblack" : "text-primary"}`}>Organization</span>
             </NavLink>
 
             <NavLink
@@ -193,7 +184,7 @@ const Sidebar = () => {
               className={({ isActive }) => (isActive ? activeLink : normalLink)}
             >
               <span className='p-2 bg-myblack rounded-sm'><FaRegHandshake style={{ fontSize: "20px" }} /></span>
-              <span className="capitalize text-primary"> Proposal list</span>
+              <span className={`capitalize text-sm ${location.pathname==='/proposal' ? "text-myblack" : "text-primary"}`}> Proposal list</span>
             </NavLink>
 
           </div>

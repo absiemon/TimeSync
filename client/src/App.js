@@ -65,7 +65,6 @@ const App = () => {
 
       }).catch((err) => {
         setLoading(false)
-        message.error("Unauthorized action")
       })
     }
 
@@ -74,33 +73,24 @@ const App = () => {
   return (
     <>
       {isAuthenticated && user ?
-        <div className={currentMode === 'Dark' ? 'dark' : ''}>
-          <div className="flex relative dark:bg-main-dark-bg">
-            <div className="fixed right-4 bottom-4" style={{ zIndex: '1000' }}>
-              <TooltipComponent
-                content="Settings"
-                position="Top"
-              >
-
-              </TooltipComponent>
+          <div className="flex dark:bg-main-dark-bg">
+            <div 
+              className="sidebar fixed " 
+              style={{ 
+                width: activeMenu ? '17vw' : '5vw',
+                background: "#252932", height: "100%" ,
+                transition: 'width 0.2s ease',
+              }}
+            >
+              <Sidebar />
             </div>
-            {activeMenu ? (
-              <div className="fixed sidebar" style={{ width: "17vw", background: "#252932" }}>
-                <Sidebar />
-              </div>
-            ) : (
-              <div className="w-0 dark:bg-secondary-dark-bg">
-                <Sidebar />
-              </div>
-            )}
             <div
-              className={
-                activeMenu
-                  ? 'dark:bg-main-dark-bg  bg-main-bg min-h-screen margin-l'
-                  : 'bg-main-bg dark:bg-main-dark-bg min-h-screen flex-2 margin-o'
-              }
-
-              style={{ background: "#1c1f26", width: '83vw' }}
+              style={{ 
+                background: "#1c1f26", 
+                width: activeMenu ? 'calc(100% - 17vw)' : 'calc(100% - 5vw)', 
+                marginLeft: activeMenu ? '17vw' : '5vw',  
+                transition: 'width 0.2s ease',
+              }}
             >
               <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg w-full" style={{ background: "#252932", position: "sticky", top: "0", zIndex: 1000 }}>
                 <Navbar />
@@ -183,36 +173,6 @@ const App = () => {
                   <Route path="/proposal/create/:id"  element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
                     {user && user.role === 'admin' && <ProposalForm />}
                   </Suspense>} />
-
-
-                  {/* {user && user.role === 'admin' && <Route path="/employee/create" element={(<EmployeesForm />)} />}
-                  {user && user.role === 'admin' && <Route path="/employee/create/:id" element={(<EmployeesForm />)} />}
-                  {user && user.role === 'admin' && <Route path="/employee/designation" element={(<Designation />)} />}
-                  {user && user.role === 'admin' && <Route path="/employee/designation/create" element={(<DesignationForm />)} />}
-                  {user && user.role === 'admin' && <Route path="/employee/designation/create/:id" element={(<DesignationForm />)} />}
-
-                  {user && user.role === 'admin' && <Route path="/employee/department" element={(<Department />)} />}
-                  {user && user.role === 'admin' && <Route path="/employee/department/create" element={(<DepartmentForm />)} />}
-                  {user && user.role === 'admin' && <Route path="/employee/department/create/:id" element={(<DepartmentForm />)} />} */}
-
-
-                  {/* {user && user.role === 'admin' && <Route path="/announcement" element={(<Announcement />)} />}
-                  {user && user.role === 'admin' && <Route path="/announcement/create" element={(<AnnouncementForm />)} />}
-                  {user && user.role === 'admin' && <Route path="/announcement/create/:id" element={(<AnnouncementForm />)} />} */}
-
-
-                  {/* {user && user.role === 'admin' && <Route path="/persons" element={(<Persons />)} />}
-                  {user && user.role === 'admin' && <Route path="/persons/create" element={(<PersonsForm />)} />}
-                  {user && user.role === 'admin' && <Route path="/persons/create/:id" element={(<PersonsForm />)} />} */}
-
-                  {/* {user && user.role === 'admin' && <Route path="/organization" element={(<Organization />)} />}
-                  {user && user.role === 'admin' && <Route path="/organization/create" element={(<OrganizationForm />)} />}
-                  {user && user.role === 'admin' && <Route path="/organization/create/:id" element={(<OrganizationForm />)} />} */}
-
-                  {/* {user && user.role === 'admin' && <Route path="/proposal" element={(<Proposal />)} />}
-                  {user && user.role === 'admin' && <Route path="/proposal/create" element={(<ProposalForm />)} />}
-                  {user && user.role === 'admin' && <Route path="/proposal/create/:id" element={(<ProposalForm />)} />} */}
-
                   
                   <Route path="/pipeline" element={(<Pipeline />)} />
                   <Route path="/pipeline/view" element={(<Sales_pipelines />)} />
@@ -232,13 +192,10 @@ const App = () => {
               <Footer />
             </div>
           </div>
-        </div>
         :
         loading ? <LoadingPage /> :
           <Login />
-
       }
-
     </>
   );
 };
