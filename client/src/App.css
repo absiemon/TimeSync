@@ -12,6 +12,10 @@
     z-index: 10000000;
   }
 }
+.nav-link:hover{
+  background-color: transparent !important;
+  color: white;
+}
 
 .e-dlg-center-center, .e-quick-popup-wrapper.e-device{
   z-index: 1000000 !important;

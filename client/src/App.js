@@ -77,7 +77,7 @@ const App = () => {
             <div 
               className="sidebar fixed " 
               style={{ 
-                width: activeMenu ? '17vw' : '5vw',
+                width: activeMenu ? '17vw' : '6vw',
                 background: "#252932", height: "100%" ,
                 transition: 'width 0.2s ease',
               }}
@@ -87,8 +87,8 @@ const App = () => {
             <div
               style={{ 
                 background: "#1c1f26", 
-                width: activeMenu ? 'calc(100% - 17vw)' : 'calc(100% - 5vw)', 
-                marginLeft: activeMenu ? '17vw' : '5vw',  
+                width: activeMenu ? 'calc(100% - 17vw)' : 'calc(100% - 6vw)', 
+                marginLeft: activeMenu ? '17vw' : '6vw',  
                 transition: 'width 0.2s ease',
               }}
             >
