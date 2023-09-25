@@ -46,8 +46,8 @@ function EmployeeDashboard({todayAtten, allData}) {
 
   return (
     <div className="mt-4">
-      <div className="flex gap-4">
-        <div style={{ width: "65%" }}>
+      <div className="flex gap-4 info_tab">
+        <div style={{ width: "65%" }} className="info_tab_one">
           {/* first half */}
           <div bordered={false} className="cardbg rounded-sm px-6 py-6">
             <header className="flex gap-40 relative">
@@ -92,9 +92,9 @@ function EmployeeDashboard({todayAtten, allData}) {
             </footer>
           </div>
 
-          <div className="flex gap-9 mt-4">
+          <div className="flex gap-5 mt-4">
             {/* card Level-1 */}
-            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3">
+            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3" style={{width:'50%'}}>
               {/* card-1 */}
               <div>
                 <p className="text-xl">24</p>
@@ -112,7 +112,7 @@ function EmployeeDashboard({todayAtten, allData}) {
               </div>
             </div>
 
-            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3">
+            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3" style={{width:'50%'}}>
               {/* card-2 */}
               <div>
                 <p className="text-xl">0</p>
@@ -131,9 +131,9 @@ function EmployeeDashboard({todayAtten, allData}) {
             </div>
           </div>
 
-          <div className="flex gap-9 mt-4">
+          <div className="flex gap-5 mt-4">
             {/* card level-2 */}
-            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3">
+            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3" style={{width:'50%'}}>
               {/* card-1 */}
               <div>
                 <p className="text-xl">24</p>
@@ -151,7 +151,7 @@ function EmployeeDashboard({todayAtten, allData}) {
               </div>
             </div>
 
-            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3">
+            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3" style={{width:'50%'}}>
               {/* card-2 */}
               <div>
                 <p className="text-xl">0</p>
@@ -171,7 +171,7 @@ function EmployeeDashboard({todayAtten, allData}) {
           </div>
         </div>
 
-        <div className="cardbg rounded-sm" style={{ width: "40%" }}>
+        <div className="cardbg rounded-sm info_tab_one" style={{ width: "40%" }}>
           {/* second half(Time log) */}
           <header className="px-2 py-2 text-xl"> Time log</header>
           <Divider className="bg-secondary" />

@@ -2,10 +2,16 @@
     padding: 15px 9px !important;
 }
 
-@media only screen and (min-width: 577px) and (max-width: 770px) {
+@media only screen and (min-width: 577px) and (max-width: 880px) {
 	.ant-col-xs-6 {
 		flex: 0 0 14% !important;
 	}
+    .info_tab{
+        flex-direction: column !important;
+    }
+    .info_tab_one{
+        width: 100% !important;
+    }
 }
 .punchcol{
     margin-bottom: 24px;
@@ -52,6 +58,15 @@
     height: 60px;
     display: flex;
     width: 182px;
+    background-color: #1C1F26;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+.icon-box-punch_atten{
+    height: 66px;
+    display: flex;
+    width: 66px;
     background-color: #1C1F26;
     align-items: center;
     justify-content: center;

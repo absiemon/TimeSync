@@ -53,7 +53,6 @@ function ProfileMenu(){
       </div>,
       key: '1',
     },
-    
     {
       label: 
       <div className="flex justify-start text-primary" style={{gap:'17px', padding:'12px 9px 17px 6px'}} role='button' onClick={logout}>
@@ -80,7 +79,6 @@ function ProfileMenu(){
   <Dropdown
     overlay={menu}
     trigger={['click']}
-    className='dropdown'
   >
     <div role="button" onClick={(e) => e.preventDefault()}>
       <Space>

@@ -33,7 +33,6 @@ const Sidebar = () => {
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 text-md text-gray-700 m-2 br-2";
 
   return (
-
       <>
         <div
           className="flex justify-between items-center fixed pl-2.5 "
@@ -57,8 +56,8 @@ const Sidebar = () => {
         </div>
 
         <div
-          className="mt-24 relative"
-          style={{ minWidth: "17vw", overflow: "hidden" }}
+          className="mt-20 relative"
+          style={{ minWidth: "6vw", overflow: "hidden", height:'86vh', overflowY:'scroll' }}
         >
           <NavLink
             to={`/`}

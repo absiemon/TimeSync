@@ -199,7 +199,7 @@ const Home = () => {
         </Row>
 
         {user?.role==='admin' && 
-        <div className="flex gap-8 justify-between">
+        <div className="flex gap-8 justify-between flex-wrap">
           <div
             bordered={false}
             className="h-24 w-60 cardbg rounded-sm flex items-center pl-8 gap-4"

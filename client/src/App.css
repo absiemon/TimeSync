@@ -148,7 +148,7 @@
 .ant-dropdown{
   background-color:#20242C;
   font-family: 'Poppins', sans-serif !important;
-  width: 120px !important;
+  /* width: 120px !important; */
   color: #CCCCCC !important;
 }
 

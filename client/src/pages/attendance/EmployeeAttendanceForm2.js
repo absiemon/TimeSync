@@ -1,16 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Row, Col, Card, Button, Form, Input, message, Drawer } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
-import { Select } from 'antd';
-// import '../../assets/styles/principal.css'
 import '../../assets/styles/home.css'
 
 import axios from 'axios';
-import moment from 'moment';
 import { LoginOutlined } from '@ant-design/icons';
 import { useStateContext } from '../../contexts/ContextProvider';
-
-// import TextArea from 'antd/lib/input/TextArea';
 
 
 function EmployeeAttendanceForm2({ onClose, open, Id, punchTime, punchLocation, todayAtten }) {
@@ -173,7 +168,7 @@ function EmployeeAttendanceForm2({ onClose, open, Id, punchTime, punchLocation, 
                                                     <div className="number">
                                                         <Row align="middle" gutter={[30, 0]}>
                                                             <Col xs={6}>
-                                                                <div className="icon-box-punch"><LoginOutlined style={{ fontSize: '24px', color: '#fc6510' }} /></div>
+                                                                <div className="icon-box-punch_atten"><LoginOutlined style={{ fontSize: '24px', color: '#fc6510' }} /></div>
                                                             </Col>
                                                             <Col xs={18}>
                                                                 <div className='text'> Punch out time & date</div>
@@ -192,7 +187,7 @@ function EmployeeAttendanceForm2({ onClose, open, Id, punchTime, punchLocation, 
                                                     <div className="number">
                                                         <Row align="middle" gutter={[30, 0]}>
                                                             <Col xs={6}>
-                                                                <div className="icon-box-punch"><LoginOutlined style={{ fontSize: '24px', color: '#46c35f' }} /></div>
+                                                                <div className="icon-box-punch_atten"><LoginOutlined style={{ fontSize: '24px', color: '#46c35f' }} /></div>
                                                             </Col>
                                                             <Col xs={18}>
                                                                 <div className='text'> Punch in time & date</div>
