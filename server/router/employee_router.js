@@ -1,14 +1,9 @@
 import  express   from "express";
 import { createEmployee, deletFTPfile, deleteEmployee, getAllEmployee, getSingleEmployee, updateEmployee, uploadFiles, getEmployeeByName } from "../controllers/Employee_controller.js";
 import multer  from 'multer';
-import fs from 'fs'
 
 const router = express.Router();
 
-// const uploadDir = 'tmp/';
-// if (!fs.existsSync(uploadDir)) {
-//   fs.mkdirSync(uploadDir);
-// }
 const upload = multer({ dest: '/tmp' });
 
 router.post('/create-employee', createEmployee)

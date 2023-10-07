@@ -136,7 +136,7 @@
     font-size: 21px;
     line-height: 1.4;
     font-weight: 400;
-    color: #649a33;
+    color: rgb(3, 201, 215)
 }
 
 .login_right-p{
@@ -155,7 +155,7 @@
     position: absolute;
     top: 14px;
     left: 16px;
-    color: #649a33;
+    color: rgb(3, 201, 215);
     z-index: 1;
 }
 
@@ -176,7 +176,7 @@
 
 .login_right-form-inp-input:focus{
     background: transparent;
-    border: 1px solid #649a33;
+    border: 1px solid rgb(3, 201, 215);
     outline: none;
 }
 
@@ -185,13 +185,13 @@
     line-height: 1;
     font-size: 14px;
     border-radius: 10px;
-    background: #649a33;
+    background: rgb(3, 201, 215);
     color: #fff;
 }
 
 
 .login_right-btn:hover{
-    background: #659a33b2;
+    background: rgb(3, 201, 215);
     transition: 0.3s;
     
 }

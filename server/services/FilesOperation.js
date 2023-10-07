@@ -1,9 +1,18 @@
 import {PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import connectToS3 from '../config/S3Config.js'
+import { S3Client } from '@aws-sdk/client-s3';
 
 export const uplaodToS3 = async (buffer, originalname, mimetype)=> {
     const newFilename = originalname + "-" +Date.now();
-    await connectToS3.send(new PutObjectCommand({
+    const client = new S3Client({
+        credentials: {
+            accessKeyId: process.env.ACCESS_KEY,
+            secretAccessKey: process.env.SECRET_ACCESS_KEY
+        },
+        region: process.env.BUCKET_REGION ,
+    })
+
+    await client.send(new PutObjectCommand({
         Bucket: process.env.BUCKET_NAME,
         Body: buffer,
         Key: newFilename,
@@ -14,7 +23,15 @@ export const uplaodToS3 = async (buffer, originalname, mimetype)=> {
 
 export const deleteFromS3 = async (filename)=> {
     try {
-        await connectToS3.send(new DeleteObjectCommand({
+        const client = new S3Client({
+            credentials: {
+                accessKeyId: process.env.ACCESS_KEY,
+                secretAccessKey: process.env.SECRET_ACCESS_KEY
+            },
+            region: process.env.BUCKET_REGION ,
+        })
+
+        await client.send(new DeleteObjectCommand({
             Bucket: process.env.BUCKET_NAME,
             Key: filename,
         }));

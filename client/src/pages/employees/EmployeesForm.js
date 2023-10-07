@@ -41,7 +41,6 @@ function EmployeesForm() {
 
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedState, setSelectedState] = useState('');
-    const [selectedCity, setSelectedCity] = useState('');
 
 
     useEffect(() => {
@@ -102,7 +101,7 @@ function EmployeesForm() {
         fetchData();
     }, []);
 
-    const handleCountrySelect = (value)=>{
+    const handleCountrySelect = (value) => {
         form.setFieldsValue({
             country: Country.getCountryByCode(value).name
         })
@@ -247,13 +246,11 @@ function EmployeesForm() {
             }
 
         }).catch(err => {
-
             message.error('Error in file deleting');
-            // console.log(EmpImageUploadedFiles)
         })
     }
     const handleView = (fname) => {
-        const url = `https://superdolphins.com/superdolphins.com/superdolphinsltd/${fname}`;
+        const url = `https://time-sync.s3.ap-south-1.amazonaws.com/${fname}`;
         window.open(url, '_blank');
     }
 
@@ -410,10 +407,10 @@ function EmployeesForm() {
                                         </Col>
                                         <Col md={{ span: 11 }} xs={{ span: 22 }} style={{ margin: '0 14px' }}>
                                             <Form.Item label="Country" name="country" rules={[{ required: true }]} labelAlign="left">
-                                                <Select 
-                                                showSearch='true'
-                                                value={selectedCountry} 
-                                                onChange={handleCountrySelect}
+                                                <Select
+                                                    showSearch='true'
+                                                    value={selectedCountry}
+                                                    onChange={handleCountrySelect}
                                                 >
                                                     {Country.getAllCountries().map(country => (
                                                         <Select.Option key={country.isoCode} value={country.isoCode}>
@@ -427,10 +424,10 @@ function EmployeesForm() {
                                     <Row>
                                         <Col md={{ span: 11 }} xs={{ span: 22 }} style={{ margin: '0 14px' }}>
                                             <Form.Item label="State" name="state" rules={[{ required: true }]} labelAlign="left">
-                                                <Select 
-                                                showSearch='true'
-                                                value={selectedState} 
-                                                onChange={value => setSelectedState(value)}
+                                                <Select
+                                                    showSearch='true'
+                                                    value={selectedState}
+                                                    onChange={value => setSelectedState(value)}
                                                 >
                                                     {State.getStatesOfCountry(selectedCountry).map(state => (
                                                         <Select.Option key={state.isoCode} value={state.name}>
@@ -466,7 +463,7 @@ function EmployeesForm() {
                                     <h2 style={{ margin: "15px 12px", fontWeight: "400", fontSize: "24px", color: '#CCCCCC' }}>Other Information</h2>
 
                                     <Row>
-                                        
+
                                         <Col md={{ span: 11 }} xs={{ span: 22 }} style={{ margin: '0 14px' }}>
                                             <Form.Item label="Role" name="role" rules={[{ required: true }]} labelAlign="left">
                                                 <Input style={{ padding: '11px' }} />
@@ -495,22 +492,28 @@ function EmployeesForm() {
                                         </Col>
                                         <Col md={{ span: 11 }} xs={{ span: 22 }} style={{ margin: '0 14px' }} >
                                             <Form.Item label="Employee image" name="upload_emp_img">
-                                                <Input style={{ padding: '5px' }} type='file' accept='.png,.jpg' onChange={(e) => handleFileUpload(e, "emp_img")} disabled={loading} value={imgUploadValue} />
+                                                {!uploadedEmpImage && 
+                                                    <Input style={{ padding: '5px' }} type='file' accept='.png,.jpg' onChange={(e) => handleFileUpload(e, "emp_img")} disabled={loading} value={imgUploadValue} />
+                                                }
 
                                                 {loading && <LoadingOutlined style={{ position: 'absolute', top: '14px', right: '24px' }} />}
 
                                                 {uploadedEmpImage && uploadedEmpImage.length > 0 &&
-                                                    <div style={{ height: "60px", overflowY: "scroll", display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
 
-                                                        <Card style={{ marginTop: '10px', height: 50, }} >
-                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '1rem' }}>
-                                                                <FilePdfOutlined className='text-red-600 text-xl' />
-                                                                <div>{uploadedEmpImage}</div>
-                                                                <FolderViewOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleView(uploadedEmpImage)} />
-                                                                <DeleteOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleFileDelete(uploadedEmpImage, "emp_img", id, "emp_image")} />
-                                                            </div>
-                                                        </Card>
-                                                    </div>}
+                                                    <div
+                                                        style={{
+                                                            display: 'flex', alignItems: 'center', gap: '10px',
+                                                            fontSize: '1rem', border: "2px solid white", padding: "6px 14px",
+                                                            borderRadius: "6px", color: "white"
+                                                        }}
+                                                    >
+                                                        <FilePdfOutlined className='text-red-600 text-xl' />
+                                                        <div>{uploadedEmpImage}</div>
+                                                        <FolderViewOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleView(uploadedEmpImage)} />
+                                                        <DeleteOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleFileDelete(uploadedEmpImage, "emp_img", id, "emp_image")} />
+                                                    </div>
+
+                                                }
 
                                             </Form.Item>
                                         </Col>
@@ -524,22 +527,26 @@ function EmployeesForm() {
                                     <Row>
                                         <Col md={{ span: 11 }} xs={{ span: 22 }} style={{ margin: '0 14px' }} >
                                             <Form.Item label="Employee CV" name="upload_emp_cv">
-                                                <Input style={{ padding: '5px' }} type='file' accept='.pdf,.docx' onChange={(e) => handleFileUpload(e, "emp_cv")} disabled={loading} value={imgUploadValue} />
+                                                {!uploadedEmpCv &&
+                                                <Input style={{ padding: '5px' }} type='file' accept='.pdf,.docx' onChange={(e) => handleFileUpload(e, "emp_cv")} disabled={loading} value={imgUploadValue} />}
 
                                                 {loading && <LoadingOutlined style={{ position: 'absolute', top: '14px', right: '24px' }} />}
 
                                                 {uploadedEmpCv && uploadedEmpCv.length > 0 &&
-                                                    <div style={{ height: "60px", overflowY: "scroll", display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
 
-                                                        <Card style={{ marginTop: '10px', height: 50, }}>
-                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '1rem' }}>
-                                                                <FilePdfOutlined className='text-red-600 text-xl' />
-                                                                <div>{uploadedEmpCv}</div>
-                                                                <FolderViewOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleView(uploadedEmpCv)} />
-                                                                <DeleteOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleFileDelete(uploadedEmpCv, "emp_cv", id, "emp_cv")} />
-                                                            </div>
-                                                        </Card>
-                                                    </div>}
+                                                    <div
+                                                        style={{
+                                                            display: 'flex', alignItems: 'center', gap: '10px',
+                                                            fontSize: '1rem', border: "2px solid white", padding: "6px 14px",
+                                                            borderRadius: "6px", color: "white"
+                                                        }}
+                                                    >
+                                                        <FilePdfOutlined className='text-red-600 text-xl' />
+                                                        <div>{uploadedEmpCv}</div>
+                                                        <FolderViewOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleView(uploadedEmpCv)} />
+                                                        <DeleteOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleFileDelete(uploadedEmpCv, "emp_cv", id, "emp_cv")} />
+                                                    </div>
+                                                }
                                             </Form.Item>
                                         </Col>
                                         <Col md={{ span: 11 }} xs={{ span: 22 }} style={{ margin: '0 14px', display: 'none' }} >

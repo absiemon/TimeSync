@@ -136,7 +136,7 @@
     font-size: 21px;
     line-height: 1.4;
     font-weight: 400;
-    color: #649a33;
+    color: rgb(3, 201, 215);
 }
 
 .login_right-p{
@@ -185,7 +185,7 @@
     line-height: 1;
     font-size: 14px;
     border-radius: 10px;
-    background: #649a33;
+    background: rgb(3, 201, 215);
     color: #fff;
 }
 
