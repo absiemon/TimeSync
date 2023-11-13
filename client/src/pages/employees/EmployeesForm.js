@@ -42,6 +42,7 @@ function EmployeesForm() {
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedState, setSelectedState] = useState('');
 
+    const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
         if (id) {
@@ -173,14 +174,16 @@ function EmployeesForm() {
         for (let i = 0; i < files.length; i++) {
             data.append('files', files[i]);
         }
+        setSelectedImage(null)
         setLoading(true)
         axios.post('http://localhost:8000/api/employee/upload-files', data).then((res) => {
             const lableData = res.data;
 
             if (type === 'emp_img') {
-                form.setFieldsValue({ upload_emp_img: "" });
+                // form.setFieldsValue({ upload_emp_img: "" });
                 form.setFieldsValue({ emp_image: lableData[0] });
                 setUploadedEmpImage(res.data);
+                // e.target.value = null;
             }
             else if (type === 'emp_cv') {
                 form.setFieldsValue({ upload_emp_cv: "" });
@@ -190,7 +193,6 @@ function EmployeesForm() {
             else if (type === 'emp_certificates') {
                 const prevValue = form.getFieldsValue('certificates').certificates;
                 if (prevValue) {
-
                     const arr1 = JSON.parse(prevValue);
                     const arr2 = lableData;
                     const newArr = [...arr1, ...arr2];
@@ -199,7 +201,6 @@ function EmployeesForm() {
                 else {
                     form.setFieldsValue({ certificates: JSON.stringify(lableData) });
                 }
-
                 setUploadedEmpCertificates([...uploadedEmpCertificates, ...res.data]);
             }
 
@@ -212,6 +213,7 @@ function EmployeesForm() {
     }
 
     const handleFileDelete = (fname, type, id, field) => {
+        setSelectedImage(null)
         if (type === "emp_img") {
             setUploadedEmpImage();
         }
@@ -224,16 +226,17 @@ function EmployeesForm() {
 
         axios.delete(`http://localhost:8000/api/employee/delete-ftp-file/${fname}?id=${id}&field=${field}`).then((res) => {
             if (type === 'emp_img') {
-                form.setFieldsValue({
-                    emp_image: res.data
-                })
+                // form.setFieldsValue({
+                //     emp_image: res.data
+                // })
+                setSelectedImage(null)
             }
-            else if (type === 'emp_cv') {
-                form.setFieldsValue({
-                    emp_cv: res.data
-                })
-            }
-            else if (type === 'emp_certificates') {
+            // else if (type === 'emp_cv') {
+            //     form.setFieldsValue({
+            //         emp_cv: res.data
+            //     })
+            // }
+            if (type === 'emp_certificates') {
                 const prevValue = form.getFieldsValue('certificates').certificates;
                 if (prevValue) {
                     const arr1 = JSON.parse(prevValue);
@@ -493,13 +496,13 @@ function EmployeesForm() {
                                         <Col md={{ span: 11 }} xs={{ span: 22 }} style={{ margin: '0 14px' }} >
                                             <Form.Item label="Employee image" name="upload_emp_img">
                                                 {!uploadedEmpImage && 
-                                                    <Input style={{ padding: '5px' }} type='file' accept='.png,.jpg' onChange={(e) => handleFileUpload(e, "emp_img")} disabled={loading} value={imgUploadValue} />
+                                                    <Input style={{ padding: '5px' }} type='file' accept='.png,.jpg,.jpeg,.webp' onChange={(e) => handleFileUpload(e, "emp_img")} disabled={loading} 
+                                                    value={selectedImage ? '' : undefined} />
                                                 }
 
                                                 {loading && <LoadingOutlined style={{ position: 'absolute', top: '14px', right: '24px' }} />}
 
                                                 {uploadedEmpImage && uploadedEmpImage.length > 0 &&
-
                                                     <div
                                                         style={{
                                                             display: 'flex', alignItems: 'center', gap: '10px',
@@ -512,7 +515,6 @@ function EmployeesForm() {
                                                         <FolderViewOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleView(uploadedEmpImage)} />
                                                         <DeleteOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleFileDelete(uploadedEmpImage, "emp_img", id, "emp_image")} />
                                                     </div>
-
                                                 }
 
                                             </Form.Item>

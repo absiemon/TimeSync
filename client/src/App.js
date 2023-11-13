@@ -56,7 +56,6 @@ const App = () => {
         setLoading(false)
       })
     }
-
   }, [])
 
   return (
@@ -85,7 +84,6 @@ const App = () => {
               <Navbar />
             </div>
             <div>
-              {themeSettings && (<ThemeSettings />)}
 
               <Routes>
                 {/* dashboard  */}

@@ -1,9 +1,9 @@
 import {PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import connectToS3 from '../config/S3Config.js'
 import { S3Client } from '@aws-sdk/client-s3';
+import fs from 'fs'
 
-export const uplaodToS3 = async (buffer, originalname, mimetype)=> {
-    const newFilename = originalname + "-" +Date.now();
+export const uplaodToS3 = async (path, originalname, mimetype)=> {
     const client = new S3Client({
         credentials: {
             accessKeyId: process.env.ACCESS_KEY,
@@ -12,9 +12,10 @@ export const uplaodToS3 = async (buffer, originalname, mimetype)=> {
         region: process.env.BUCKET_REGION ,
     })
 
+    const newFilename = originalname + "-" +Date.now();
     await client.send(new PutObjectCommand({
         Bucket: process.env.BUCKET_NAME,
-        Body: buffer,
+        Body: fs.readFileSync(path),
         Key: newFilename,
         ContentType: mimetype,
     }))

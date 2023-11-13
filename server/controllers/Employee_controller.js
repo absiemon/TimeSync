@@ -143,8 +143,8 @@ export const uploadFiles = async (req, res) => {
     try {
         const filesUrl = [];
         for (let i = 0; i < req.files.length; i++) {
-            const { originalname, mimetype, buffer } = req.files[i];
-            const url = await uplaodToS3(buffer, originalname, mimetype);
+            const { originalname, mimetype, path } = req.files[i];
+            const url = await uplaodToS3(path, originalname, mimetype);
             filesUrl.push(url);
         }
         res.send(filesUrl);

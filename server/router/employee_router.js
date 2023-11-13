@@ -8,7 +8,7 @@ const upload = multer({ dest: '/tmp' });
 
 router.post('/create-employee', createEmployee)
 router.get('/get-employee', getAllEmployee);
-router.get('/get-single-employee/:id', getSingleEmployee);
+router.get('/get-single-employee/:id', getSingleEmployee);3
 router.put('/update-employee/:id', updateEmployee)
 router.delete('/delete-employee/:id', deleteEmployee)
 router.post('/upload-files',  upload.array('files', 100), uploadFiles)
