@@ -187,7 +187,7 @@ function Employees() {
       setFetchAgain={setFetchAgain}
       fetchAgain={fetchAgain}
     />
-      <header className='p-8'>
+      <header className='p-8' >
         <div className='flex justify-between pb-6'>
           <h2 className='text-xl text-white'>All Employees</h2>
           <Button type="primary" htmlType="submit" style={{ margin: "0px 10px", backgroundColor: "limegreen" }} className='punch' onClick={() => navigate('/employee/create')}>
@@ -196,9 +196,7 @@ function Employees() {
         </div>
         <div className='flex justify-between'>
           <div className='flex gap-5'>
-            {/* <div className='bgcl py-3 px-6 rounded-full text-sm cursor-pointer'>
-              Created
-            </div> */}
+
             {!selectedDepartment ? 
               <div className='bgcl py-3 px-6 rounded-full text-sm cursor-pointer' onClick={()=> setOpen(true)}>Department</div>
               :

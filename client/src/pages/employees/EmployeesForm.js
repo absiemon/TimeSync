@@ -28,7 +28,9 @@ function EmployeesForm() {
     const [uploadedEmpImage, setUploadedEmpImage] = useState();
     const [uploadedEmpCertificates, setUploadedEmpCertificates] = useState([]);
 
-    const [loading, setLoading] = useState(false);
+    const [loading1, setLoading1] = useState(false);
+    const [loading2, setLoading2] = useState(false);
+    const [loading3, setLoading3] = useState(false);
 
     const [buttonLoading, setButtonLoading] = useState(false);
     const [imgUploadValue, setImageUploadValue] = useState("")
@@ -175,20 +177,24 @@ function EmployeesForm() {
             data.append('files', files[i]);
         }
         setSelectedImage(null)
-        setLoading(true)
+        if(type === 'emp_img') setLoading1(true)
+        if(type === 'emp_cv') setLoading2(true)
+        if(type === 'emp_certificates') setLoading3(true)
+
         axios.post('http://localhost:8000/api/employee/upload-files', data).then((res) => {
             const lableData = res.data;
 
             if (type === 'emp_img') {
-                // form.setFieldsValue({ upload_emp_img: "" });
-                form.setFieldsValue({ emp_image: lableData[0] });
+                form.setFieldsValue({ upload_emp_img: "" });
+                form.setFieldsValue({ emp_image: lableData[0].split('-')[0] });
                 setUploadedEmpImage(res.data);
-                // e.target.value = null;
+                setLoading1(false)
             }
             else if (type === 'emp_cv') {
                 form.setFieldsValue({ upload_emp_cv: "" });
-                form.setFieldsValue({ emp_cv: lableData[0] });
+                form.setFieldsValue({ emp_cv: lableData[0].split('-')[0] });
                 setUploadedEmpCv(res.data);
+                setLoading2(false)
             }
             else if (type === 'emp_certificates') {
                 const prevValue = form.getFieldsValue('certificates').certificates;
@@ -202,13 +208,15 @@ function EmployeesForm() {
                     form.setFieldsValue({ certificates: JSON.stringify(lableData) });
                 }
                 setUploadedEmpCertificates([...uploadedEmpCertificates, ...res.data]);
+                setLoading3(false)
             }
 
-            setLoading(false)
         }).catch((err) => {
 
             message.error('Error Uploading files');
-            setLoading(false)
+            setLoading1(false)
+            setLoading2(false)
+            setLoading3(false)
         })
     }
 
@@ -226,16 +234,16 @@ function EmployeesForm() {
 
         axios.delete(`http://localhost:8000/api/employee/delete-ftp-file/${fname}?id=${id}&field=${field}`).then((res) => {
             if (type === 'emp_img') {
-                // form.setFieldsValue({
-                //     emp_image: res.data
-                // })
-                setSelectedImage(null)
+                form.setFieldsValue({
+                    emp_image: res.data
+                })
+                // setSelectedImage(null)
             }
-            // else if (type === 'emp_cv') {
-            //     form.setFieldsValue({
-            //         emp_cv: res.data
-            //     })
-            // }
+            else if (type === 'emp_cv') {
+                form.setFieldsValue({
+                    emp_cv: res.data
+                })
+            }
             if (type === 'emp_certificates') {
                 const prevValue = form.getFieldsValue('certificates').certificates;
                 if (prevValue) {
@@ -496,11 +504,11 @@ function EmployeesForm() {
                                         <Col md={{ span: 11 }} xs={{ span: 22 }} style={{ margin: '0 14px' }} >
                                             <Form.Item label="Employee image" name="upload_emp_img">
                                                 {!uploadedEmpImage && 
-                                                    <Input style={{ padding: '5px' }} type='file' accept='.png,.jpg,.jpeg,.webp' onChange={(e) => handleFileUpload(e, "emp_img")} disabled={loading} 
+                                                    <Input style={{ padding: '5px' }} type='file' accept='.png,.jpg,.jpeg,.webp' onChange={(e) => handleFileUpload(e, "emp_img")} disabled={loading1} 
                                                     value={selectedImage ? '' : undefined} />
                                                 }
 
-                                                {loading && <LoadingOutlined style={{ position: 'absolute', top: '14px', right: '24px' }} />}
+                                                {loading1 && <LoadingOutlined style={{ position: 'absolute', top: '14px', right: '24px' }} />}
 
                                                 {uploadedEmpImage && uploadedEmpImage.length > 0 &&
                                                     <div
@@ -511,7 +519,7 @@ function EmployeesForm() {
                                                         }}
                                                     >
                                                         <FilePdfOutlined className='text-red-600 text-xl' />
-                                                        <div>{uploadedEmpImage}</div>
+                                                        <div>{uploadedEmpImage.length> 20 ? uploadedEmpImage.slice(0,20) + '...' : uploadedEmpImage}</div>
                                                         <FolderViewOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleView(uploadedEmpImage)} />
                                                         <DeleteOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleFileDelete(uploadedEmpImage, "emp_img", id, "emp_image")} />
                                                     </div>
@@ -530,9 +538,9 @@ function EmployeesForm() {
                                         <Col md={{ span: 11 }} xs={{ span: 22 }} style={{ margin: '0 14px' }} >
                                             <Form.Item label="Employee CV" name="upload_emp_cv">
                                                 {!uploadedEmpCv &&
-                                                <Input style={{ padding: '5px' }} type='file' accept='.pdf,.docx' onChange={(e) => handleFileUpload(e, "emp_cv")} disabled={loading} value={imgUploadValue} />}
+                                                <Input style={{ padding: '5px' }} type='file' accept='.pdf,.docx' onChange={(e) => handleFileUpload(e, "emp_cv")} disabled={loading2} value={imgUploadValue} />}
 
-                                                {loading && <LoadingOutlined style={{ position: 'absolute', top: '14px', right: '24px' }} />}
+                                                {loading2 && <LoadingOutlined style={{ position: 'absolute', top: '14px', right: '24px' }} />}
 
                                                 {uploadedEmpCv && uploadedEmpCv.length > 0 &&
 
@@ -544,7 +552,7 @@ function EmployeesForm() {
                                                         }}
                                                     >
                                                         <FilePdfOutlined className='text-red-600 text-xl' />
-                                                        <div>{uploadedEmpCv}</div>
+                                                        <div>{uploadedEmpCv.length> 20 ? uploadedEmpCv.slice(0,20) + '...' : uploadedEmpCv}</div>
                                                         <FolderViewOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleView(uploadedEmpCv)} />
                                                         <DeleteOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleFileDelete(uploadedEmpCv, "emp_cv", id, "emp_cv")} />
                                                     </div>
@@ -566,9 +574,9 @@ function EmployeesForm() {
                                     <Row>
                                         <Col md={{ span: 11 }} xs={{ span: 22 }} style={{ margin: '0 14px' }} >
                                             <Form.Item label="Certificates" name="upload_certificates">
-                                                <Input style={{ padding: '5px' }} type='file' accept='.pdf,.docx,.png,.jpeg,.jpg' multiple onChange={(e) => handleFileUpload(e, "emp_certificates")} disabled={loading} value={imgUploadValue} />
+                                                <Input style={{ padding: '5px' }} type='file' accept='.pdf,.docx,.png,.jpeg,.jpg' multiple onChange={(e) => handleFileUpload(e, "emp_certificates")} disabled={loading3} value={imgUploadValue} />
 
-                                                {loading && <LoadingOutlined style={{ position: 'absolute', top: '14px', right: '24px' }} />}
+                                                {loading3 && <LoadingOutlined style={{ position: 'absolute', top: '14px', right: '24px' }} />}
                                                 {uploadedEmpCertificates.length > 0 &&
                                                     <div style={{ height: "60px", overflowY: "scroll", display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
                                                         {uploadedEmpCertificates.map((fname) => {
@@ -576,7 +584,7 @@ function EmployeesForm() {
                                                                 <Card style={{ marginTop: '10px', height: 50 }} key={fname}>
                                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '1rem' }}>
                                                                         <FilePdfOutlined className='text-red-600 text-xl' />
-                                                                        <div>{fname}</div>
+                                                                        <div>{fname.length> 20 ? fname.slice(0,20) + '...' : fname}</div>
                                                                         <FolderViewOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleView(fname)} />
                                                                         <DeleteOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleFileDelete(fname, "emp_certificates", id, "certificates")} />
                                                                     </div>

@@ -2,7 +2,7 @@
     padding: 15px 9px !important;
 }
 
-@media only screen and (min-width: 577px) and (max-width: 880px) {
+@media only screen and (min-width: 400px) and (max-width: 880px) {
 	.ant-col-xs-6 {
 		flex: 0 0 14% !important;
 	}
@@ -13,6 +13,26 @@
         width: 100% !important;
     }
 }
+
+@media only screen and (min-width: 400px) and (max-width: 600px) {
+    .info_tab_footer{
+        flex-direction: column !important;
+        gap: 20px;
+    }
+    .icon-box-punch{
+        width: 60px !important;
+    }
+    .card_level{
+        flex-direction: column !important;
+    }
+    .card_level_box{
+        width: 100% !important;
+        gap: 3rem !important;
+    }
+   
+}
+
+
 .punchcol{
     margin-bottom: 24px;
     display: flex !important;

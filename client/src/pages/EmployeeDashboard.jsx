@@ -66,7 +66,7 @@ function EmployeeDashboard({todayAtten, allData}) {
                 {(todayAtten && todayAtten.length>0) ? todayAtten[0]?.behaviour.charAt(0).toUpperCase() + todayAtten[0]?.behaviour.slice(1) : getBehaviour()}
               </div>
             </header>
-            <footer className="flex mt-12">
+            <footer className="flex mt-12 info_tab_footer">
               <div className="flex gap-3">
                 <div className="icon-box-punch">
                   <LoginOutlined
@@ -92,9 +92,9 @@ function EmployeeDashboard({todayAtten, allData}) {
             </footer>
           </div>
 
-          <div className="flex gap-5 mt-4">
+          <div className="flex gap-5 mt-4 card_level">
             {/* card Level-1 */}
-            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3" style={{width:'50%'}}>
+            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3 card_level_box" style={{width:'50%'}}>
               {/* card-1 */}
               <div>
                 <p className="text-xl">24</p>
@@ -112,7 +112,7 @@ function EmployeeDashboard({todayAtten, allData}) {
               </div>
             </div>
 
-            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3" style={{width:'50%'}}>
+            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3 card_level_box" style={{width:'50%'}}>
               {/* card-2 */}
               <div>
                 <p className="text-xl">0</p>
@@ -131,9 +131,9 @@ function EmployeeDashboard({todayAtten, allData}) {
             </div>
           </div>
 
-          <div className="flex gap-5 mt-4">
+          <div className="flex gap-5 mt-4 card_level">
             {/* card level-2 */}
-            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3" style={{width:'50%'}}>
+            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3 card_level_box" style={{width:'50%'}}>
               {/* card-1 */}
               <div>
                 <p className="text-xl">24</p>
@@ -151,7 +151,7 @@ function EmployeeDashboard({todayAtten, allData}) {
               </div>
             </div>
 
-            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3" style={{width:'50%'}}>
+            <div className=" flex cardbg rounded-sm px-6 py-6 gap-3 card_level_box" style={{width:'50%'}}>
               {/* card-2 */}
               <div>
                 <p className="text-xl">0</p>

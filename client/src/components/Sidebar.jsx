@@ -56,7 +56,7 @@ const Sidebar = () => {
         </div>
 
         <div
-          className="mt-20 relative"
+          className="mt-20 relative sidebar_content"
           style={{ minWidth: "6vw", overflow: "hidden", height:'86vh', overflowY:'scroll' }}
         >
           <NavLink

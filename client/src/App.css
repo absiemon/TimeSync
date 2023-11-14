@@ -10,8 +10,19 @@
 @media  screen and (max-width:800px) {
   .sidebar{
     z-index: 10000000;
+    width: 0vw !important;
+  }
+  .sidebar_content{
+    min-width: 0vw !important;
+  }
+  .main_section{
+    margin-left: 0vw !important;
+    width: 100vw !important;
   }
 }
+
+
+
 .nav-link:hover{
   background-color: transparent !important;
   color: white;
@@ -50,6 +61,11 @@
   border: none;
 }
 
+.spinner_tone{
+  text-align: center;
+  height: 60vh;
+  margin-top: 8rem;
+}
 
 .margin-l{
   margin-left: 230px;

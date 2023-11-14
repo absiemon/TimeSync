@@ -61,7 +61,7 @@ const App = () => {
   return (
     <>
       {isAuthenticated && user ?
-        <div className="flex dark:bg-main-dark-bg">
+        <div className="dark:bg-main-dark-bg">
           <div
             className="sidebar fixed "
             style={{
@@ -73,6 +73,7 @@ const App = () => {
             <Sidebar />
           </div>
           <div
+            className='main_section'
             style={{
               background: "#1c1f26",
               width: activeMenu ? 'calc(100% - 17vw)' : 'calc(100% - 6vw)',
@@ -88,76 +89,76 @@ const App = () => {
               <Routes>
                 {/* dashboard  */}
                 <Route path="/" element={(<Home />)} />
-                <Route path="/employee" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/employee" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <Employees />}
                 </Suspense>} />
-                <Route path="/employee/create" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/employee/create" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <EmployeesForm />}
                 </Suspense>} />
-                <Route path="/employee/create/:id" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/employee/create/:id" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <EmployeesForm />}
                 </Suspense>} />
 
-                <Route path="/employee/designation" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/employee/designation" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <Designation />}
                 </Suspense>} />
-                <Route path="/employee/designation/create" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/employee/designation/create" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <DesignationForm />}
                 </Suspense>} />
-                <Route path="/employee/designation/create/:id" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/employee/designation/create/:id" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <DesignationForm />}
                 </Suspense>} />
 
-                <Route path="/employee/department" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/employee/department" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <Department />}
                 </Suspense>} />
-                <Route path="/employee/department/create" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/employee/department/create" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <DepartmentForm />}
                 </Suspense>} />
-                <Route path="/employee/department/create/:id" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/employee/department/create/:id" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <DepartmentForm />}
                 </Suspense>} />
 
 
-                <Route path="/announcement" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/announcement" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <Announcement />}
                 </Suspense>} />
-                <Route path="/announcement/create" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/announcement/create" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <AnnouncementForm />}
                 </Suspense>} />
-                <Route path="/announcement/create/:id" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/announcement/create/:id" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <AnnouncementForm />}
                 </Suspense>} />
 
-                <Route path="/persons" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/persons" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <Persons />}
                 </Suspense>} />
-                <Route path="/persons/create" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/persons/create" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <PersonsForm />}
                 </Suspense>} />
-                <Route path="/persons/create/:id" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/persons/create/:id" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <PersonsForm />}
                 </Suspense>} />
 
 
-                <Route path="/organization" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/organization" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <Organization />}
                 </Suspense>} />
-                <Route path="/organization/create" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/organization/create" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <OrganizationForm />}
                 </Suspense>} />
-                <Route path="/organization/create/:id" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/organization/create/:id" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <OrganizationForm />}
                 </Suspense>} />
 
 
-                <Route path="/proposal" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/proposal" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <Proposal />}
                 </Suspense>} />
-                <Route path="/proposal/create" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/proposal/create" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <ProposalForm />}
                 </Suspense>} />
-                <Route path="/proposal/create/:id" element={<Suspense fallback={<div style={{ textAlign: 'center' }}><Spin /></div>}>
+                <Route path="/proposal/create/:id" element={<Suspense fallback={<div className='spinner_tone'><Spin /></div>}>
                   {user && user.role === 'admin' && <ProposalForm />}
                 </Suspense>} />
 
