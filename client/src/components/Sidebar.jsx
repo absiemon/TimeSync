@@ -35,7 +35,7 @@ const Sidebar = () => {
   return (
       <>
         <div
-          className="flex justify-between items-center fixed pl-2.5 "
+          className="flex justify-between items-center fixed pl-2.5 sidebar_header"
           style={{
             background: "#2b303b",
             width: activeMenu ? "17vw": '6vw',

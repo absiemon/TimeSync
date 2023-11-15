@@ -7,6 +7,7 @@
 .navbar {
   z-index: 10000;
 }
+
 @media  screen and (max-width:800px) {
   .sidebar{
     z-index: 10000000;
@@ -19,8 +20,29 @@
     margin-left: 0vw !important;
     width: 100vw !important;
   }
+  .sidebar_header{
+    width: 0vw !important;
+    min-width: 0vw !important;
+  }
+  .small_screen_logo{
+    display: block !important;
+    background: none !important;
+    margin-left: 30% !important;
+    width: 30vw !important;
+    transition: margin-left 0.3s ease;
+  }
 }
 
+@media  screen and (max-width:550px) {
+
+  .small_screen_logo{
+    display: block !important;
+    background: none !important;
+    margin-left: 13% !important;
+    width: 35vw !important;
+    transition: margin-left 0.3s ease;
+  }
+}
 
 
 .nav-link:hover{

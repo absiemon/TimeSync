@@ -7,6 +7,8 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { useStateContext } from '../contexts/ContextProvider';
 import ProfileMenu from './ProfileMenu';
+import { SiShopware } from 'react-icons/si';
+import { Link } from 'react-router-dom';
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
@@ -52,6 +54,29 @@ const Navbar = () => {
     <div className="flex justify-between relative" style={{padding:"13px 20px", height:'70px'}}>
 
       <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
+      <div
+          className="flex justify-between items-center fixed pl-2.5 small_screen_logo"
+          style={{
+            background: "#2b303b",
+            width: "17vw",
+            height: "70px",
+            minWidth: "17vw",
+            overflow: "hidden",
+            transition: 'width 0.2s ease',
+            marginTop:'-15px',
+            display: 'none',
+            transition: 'margin-left 0.3s ease'
+          }}
+        >
+          <Link
+            to="/"
+            // onClick={handleCloseSideBar}
+            className="items-center gap-3 ml-3 mt-5 mb-5 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900"
+          >
+            <SiShopware className="login_right-logo-icon"/> 
+            <span className={`text-primary`}>Time Sync</span>
+          </Link>
+        </div>
         <ProfileMenu/>
     </div>
   );
