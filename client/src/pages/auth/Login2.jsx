@@ -27,8 +27,6 @@ const Login2 = () => {
   };
 
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
@@ -37,8 +35,6 @@ const Login2 = () => {
         "http://localhost:8000/api/auth/login",
         { email, password }
       );
-      setUser(res.data);
-      localStorage.setItem("user", JSON.stringify(res.data));
       setLoading(false)
       window.location.reload();
     } catch (err) {

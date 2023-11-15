@@ -152,10 +152,10 @@ export const getSingleEmployeeLeave = async (req, res) => {
         })
 
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
+
 export const getEmployeeLeaveByEmpId = async (req, res) => {
     const id = req.params.emp_id;
     const {type, name} = req.query;
@@ -204,7 +204,6 @@ export const getEmployeeLeaveByEmpId = async (req, res) => {
             })
         }
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
@@ -236,7 +235,6 @@ export const updateEmployeeLeave = async (req, res) => {
         })
 
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     } 
 }
@@ -253,7 +251,6 @@ export const updateEmployeeLeaveStatus = async (req, res) => {
         })
 
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     } 
 }
@@ -271,7 +268,6 @@ export const deleteEmployeeLeave = async (req, res) => {
         })
 
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     } 
 }
@@ -326,7 +322,6 @@ export const deletFTPfile = async (req, res) => {
         })
 
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     }
 }

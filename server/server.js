@@ -47,7 +47,7 @@ const corsOptions = {
     allowedHeaders: 'Content-Type, Authorization, Cookie'
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 
 app.use('/api/employee', employee);

@@ -35,6 +35,8 @@ const OrganizationForm = lazy(() => import('./pages/organization/OrganizationFor
 const Proposal = lazy(() => import('./pages/proposal/Proposal'));
 const ProposalForm = lazy(() => import('./pages/proposal/ProposalForm'))
 
+axios.defaults.withCredentials = true;
+
 const App = () => {
   const { setUser, user } = useStateContext()
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -42,20 +44,20 @@ const App = () => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'))
+    // const user = JSON.parse(localStorage.getItem('user'))
 
-    if (user) {
-      const token = user.token;
+    // if (user) {
       setLoading(true)
-      axios.post('http://localhost:8000/api/auth/profile', { token }).then((res) => {
+      axios.post('http://localhost:8000/api/auth/profile').then((res) => {
         setLoading(false)
-        setIsAuthenticated(true)
-        setUser(res.data);
-
+        if(res.data.login_status){
+          setIsAuthenticated(true)
+          setUser(res.data?.user);
+        }
       }).catch((err) => {
         setLoading(false)
       })
-    }
+    // }
   }, [])
 
   return (

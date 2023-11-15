@@ -120,76 +120,51 @@ import jwt from "jsonwebtoken"
 export const login = async (req, res) => {
     const { email, password } = req.body;
 
-    // Check if user exists
-    const selectUserQuery = 'SELECT * FROM employees WHERE login_email = ?';
-    db.query(selectUserQuery, [email], (error, results) => {
-        if (error) {
-            return res.status(500).json({ error: 'Internal server error.' });
-        }
+    try {
+        // Check if user exists
+        const selectUserQuery = 'SELECT * FROM employees WHERE login_email = ?';
+        db.query(selectUserQuery, [email], (error, results) => {
+            if (error) {
+                return res.status(500).json({ error: 'Internal server error.' });
+            }
 
-        if (results.length === 0) {
-            return res.status(401).json({ error: 'Invalid email or password.' });
-        }
+            if (results.length === 0) {
+                return res.status(401).json({ error: 'Invalid email or password.' });
+            }
 
-        const user = results[0];
+            const user = results[0];
 
-        // Check if password is correct
-        if (user.password !== password) {
-            return res.status(401).json({ error: 'Invalid email or password.' });
-        }
-        else{
-            // Create and sign JWT token
-            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+            // Check if password is correct
+            if (user.password !== password) {
+                return res.status(401).json({ error: 'Invalid email or password.' });
+            }
+            else{
+                // Create and sign JWT token
+                const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-            // Set token as cookie and send success response
-            res.cookie('jwt', token);
-            return res.status(200).json({ message: 'Login successful.', token: token, id: user.id });
-        }
-
-    });
+                // Set token as cookie and send success response
+                res.cookie('token', token, { sameSite: 'none', secure: true });
+                return res.status(200).json({ login_status: true, message: 'Login successful.'});
+            }
+        });
+    } 
+    catch (err) {
+        res.status(422).json({ error: "Failed to login user", details: err.message });
+    }
+    
 }
 
 export const profile = async (req, res) => {
-    const { token } = req.body;
     try {
-        if (token) {
-            const secret = process.env.JWT_SECRET;
-            jwt.verify(token, secret, async (err, data) => {
-                if (err) {
-                    res.status(401).json({ error: "Token expired. Please log in again." });
-                }
-                else{
-                    const id = data?.id;
-                    db.query('SELECT * FROM employees WHERE id=?', [id], (error, results) => {
-                        if (error) {
-                            return res.status(401).json({ error: 'Unauthorized access.' });
-                        }
-                        else {
-                            const data2 = results[0];
-                            const response = {
-                                id: data2.id,
-                                emp_name: data2.emp_name,
-                                email: data2.login_email,
-                                role: data2.role,
-                                emp_image: data2.emp_image,
-                                time_stamp: data2.time_stamp
-                            }
-                            return res.status(200).json(response);
-                        }
-                    })
-                }
-            })
-        }
-        else {
-            return res.json(null);
-        }
+        const response = req.user
+        return res.status(200).json({login_status: true, user: response})
     }
     catch (err) {
-        return res.status(422).json(err);
+        res.status(422).json({ error: "Failed to fetch user", details: err.message });
     }
 }
 
 export const logout = async (req, res) => {
-    res.clearCookie('jwt');
+    res.clearCookie('token');
     return res.status(200).json({ message: 'Logout successful.' });
 }
