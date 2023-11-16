@@ -72,6 +72,7 @@ function Employees() {
   const [departments, setDepartments] = useState([]);
 
   const [selectedDepartment, setSelectedDepartment] = useState();
+  const [pageNo, setPageNo] = useState(1);
 
 
   const getRowClassName = (params) => {
@@ -110,9 +111,9 @@ function Employees() {
         result = await axios.get(`http://localhost:8000/api/employee/get-employee?dep_name=` + selectedDepartment);
       }
       else{
-        result = await axios.get(`http://localhost:8000/api/employee/get-employee`);
+        result = await axios.get(`http://localhost:8000/api/employee/get-employee?page${pageNo}&pageSize=10`);
       }
-      setEmployees(result.data);
+      setEmployees(result.data?.data);
       setLoading(false)
     };
     fetchData();

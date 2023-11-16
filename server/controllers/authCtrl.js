@@ -143,7 +143,12 @@ export const login = async (req, res) => {
                 const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
                 // Set token as cookie and send success response
-                res.cookie('token', token, { sameSite: 'none', secure: true });
+                res.cookie('token', token, { 
+                    httpOnly: true, 
+                    secure: true, // Make sure to set to true if your site is served over HTTPS
+                    sameSite: 'None', // Set SameSite attribute to 'None' for cross-site cookies
+                    maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+                });
                 return res.status(200).json({ login_status: true, message: 'Login successful.'});
             }
         });
@@ -151,7 +156,6 @@ export const login = async (req, res) => {
     catch (err) {
         res.status(422).json({ error: "Failed to login user", details: err.message });
     }
-    
 }
 
 export const profile = async (req, res) => {

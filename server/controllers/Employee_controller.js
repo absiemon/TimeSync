@@ -1,20 +1,20 @@
 import db from '../config/mySQL_DB.js'
-import {uplaodToS3, deleteFromS3} from '../services/FilesOperation.js'
+import { uplaodToS3, deleteFromS3 } from '../services/FilesOperation.js'
 
 const fields = 'id, emp_name, department, designation, email, gender, phone, address, country, state, city, address2, dob, joining_date, basic_salary, emp_status, service_terms, emp_image, emp_cv, total_leave, login_email, role, certificates, created_by, updated_at FROM employees'
+
 export const createEmployee = async (req, res) => {
     const fields = req.body;
 
     try {
         let insertedFileds = [];
         let query = 'INSERT INTO employees (';
-        
+
         for (const [key, value] of Object.entries(fields)) {
-            
-            if(key === 'upload_emp_img' || key === 'upload_emp_cv' || key==='upload_certificates' ){
+
+            if (key === 'upload_emp_img' || key === 'upload_emp_cv' || key === 'upload_certificates') {
                 continue;
             }
-            
             else {
                 query += `${key}, `
                 insertedFileds.push(value);
@@ -26,51 +26,82 @@ export const createEmployee = async (req, res) => {
             query += '?, '
         })
         query = query.slice(0, -2); // Removing last comma and space
-        query += ')'   
+        query += ')'
 
         db.query(query, insertedFileds, (err, result) => {
-            if (err) throw err;
-            res.send(`Inserted ${result.affectedRows} row(s)`);
+            if (err) {
+                return res.status(500).json({ status: false, error: 'Internal server error' });
+            }
+            if (result && result.affectedRows > 0) {
+                res.status(201).json({ status: true, data: `Inserted ${result.affectedRows} row(s)` });
+            } else {
+                res.status(400).json({ status: false, error: 'Failed to insert data. No rows affected.' });
+            }
         })
-
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ status: false, error: 'Internal server error' });
     }
 };
 
 export const getAllEmployee = async (req, res) => {
-    const {name, dep_name} = req.query
+    const { name, dep_name, page, pageSize } = req.query;
     try {
-        console.log(name)
-        const query = `SELECT  ${fields}`;
+        let query = `SELECT  ${fields}`;
+        let countQuery = 'SELECT COUNT(*) AS totalRows FROM employees';
 
-        if(name && name !== 'undefined'){
-            db.query(query, (err, result) => {
-                if (err) throw err;
-                const ans = result.filter((user)=>{
-                    return user.emp_name.toLowerCase().includes(name.toLowerCase())
-                })
-                res.send(ans);
+        if (name && name !== 'undefined') {
+            query += ` WHERE emp_name LIKE ?`;
+            const searchTerm = `%${name}%`;
+
+            db.query(query, [searchTerm], (err, result) => {
+                if (err) {
+                    return res.status(500).json({ status: false, error: 'Internal server error' });
+                }
+                else {
+                    res.status(200).json({ status: true, data: result });
+                }
             })
         }
-        else if(dep_name){
+        else if (dep_name) {
             const query = `SELECT ${fields} WHERE department = ?`;
             db.query(query, [dep_name], (err, result) => {
-                if (err) throw err;
-                res.send(result);
+                if (err) {
+                    return res.status(500).json({ status: false, error: 'Internal server error' });
+                }
+                else {
+                    res.status(200).json({ status: true, data: result });
+                }
             })
         }
-        else{
-            db.query(query, (err, result) => {
-                if (err) throw err;
-                res.send(result);
+        else {
+            query += ` LIMIT ? OFFSET ?`;
+            const offset = page ? (page - 1) * pageSize : 0;
+            const limit = pageSize ? parseInt(pageSize) : 10;
+
+            db.query(countQuery, (err, countResult)=>{
+                if (err) {
+                    return res.status(500).json({ status: false, error: 'Internal server error' });
+                }
+                const totalRows = countResult[0].totalRows;
+                db.query(query, [limit, offset], (err, result) => {
+                    if (err) {
+                        return res.status(500).json({ status: false, error: 'Internal server error' });
+                    }
+                    else {
+                        const meta ={
+                            total: totalRows,
+                            totalPages: Math.ceil(totalRows / pageSize),
+                            pageNo: page,
+                        }
+                        res.status(200).json({ status: true, meta: meta, data: result });
+                    }
+                });
             })
+            
         }
 
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ status: false, error: 'Internal server error' });
     }
 }
 
@@ -97,11 +128,11 @@ export const updateEmployee = async (req, res) => {
 
         let updateValues = [];
         for (const [key, value] of Object.entries(fieldsToUpdate)) {
-            if(key === 'upload_emp_img' || key === 'upload_emp_cv' || key==='upload_certificates' ){
+            if (key === 'upload_emp_img' || key === 'upload_emp_cv' || key === 'upload_certificates') {
                 continue;
             }
-            
-            else{
+
+            else {
                 query += `${key}=?,`;
                 updateValues.push(value);
             }
@@ -119,7 +150,7 @@ export const updateEmployee = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
-    } 
+    }
 }
 
 export const deleteEmployee = async (req, res) => {
@@ -135,7 +166,7 @@ export const deleteEmployee = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
-    } 
+    }
 }
 
 
@@ -161,8 +192,8 @@ export const deletFTPfile = async (req, res) => {
     const field = req.query.field;
     try {
         console.log(filename, id, field)
-        await deleteFromS3(filename).then((response)=>{
-            if(id !== 'undefined'){
+        await deleteFromS3(filename).then((response) => {
+            if (id !== 'undefined') {
                 db.query(`SELECT ${field} FROM employees WHERE id = ?`, [id], (err, result) => {
                     if (err) {
                         console.log(err);
@@ -170,14 +201,14 @@ export const deletFTPfile = async (req, res) => {
                         return;
                     }
                     let files;
-                    
-                    if(field === 'emp_image'){
+
+                    if (field === 'emp_image') {
                         files = null;
                     }
-                    else if(field === 'emp_cv'){
+                    else if (field === 'emp_cv') {
                         files = null
                     }
-                    else if(field === 'certificates'){
+                    else if (field === 'certificates') {
                         files = JSON.parse(result[0].certificates);
                         const newFiles = files.filter(f => f !== filename);
                         const newFilesString = JSON.stringify(newFiles);
@@ -186,19 +217,19 @@ export const deletFTPfile = async (req, res) => {
                     console.log(files)
                     db.query(`UPDATE employees SET ${field} = ? WHERE id = ?`, [files, id], (err, result) => {
                         if (err) {
-                          console.log(err);
-                          res.sendStatus(500);
-                          return;
+                            console.log(err);
+                            res.sendStatus(500);
+                            return;
                         }
                         res.status(200).send(files);
-                      });
+                    });
                 })
             }
-            else{
+            else {
                 res.send(response)
             }
-            
-        }).catch((err)=>{
+
+        }).catch((err) => {
             throw err;
         })
 
@@ -210,10 +241,10 @@ export const deletFTPfile = async (req, res) => {
 
 
 
-export const getEmployeeByName = async(req, res)=>{
+export const getEmployeeByName = async (req, res) => {
     const name = req.params.value;
 
-    try{
+    try {
         const query = `SELECT ${fields} WHERE emp_name = ?`;
         db.query(query, [name], (err, result) => {
             if (err) throw err;
