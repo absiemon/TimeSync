@@ -1,7 +1,7 @@
 import db from '../config/mySQL_DB.js'
 import { uplaodToS3, deleteFromS3 } from '../services/FilesOperation.js'
 
-const fields = 'id, emp_name, department, designation, email, gender, phone, address, country, state, city, address2, dob, joining_date, basic_salary, emp_status, service_terms, emp_image, emp_cv, total_leave, login_email, role, certificates, created_by, updated_at FROM employees'
+const fields = 'emp_id, emp_name, department, designation, email, gender, phone, address, country, state, city, address2, dob, joining_date, basic_salary, emp_status, service_terms, emp_image, emp_cv, total_leave, login_email, password, role, certificates, created_by, updated_at FROM employees'
 
 export const createEmployee = async (req, res) => {
     const fields = req.body;
@@ -78,7 +78,7 @@ export const getAllEmployee = async (req, res) => {
             const offset = page ? (page - 1) * pageSize : 0;
             const limit = pageSize ? parseInt(pageSize) : 10;
 
-            db.query(countQuery, (err, countResult)=>{
+            db.query(countQuery, (err, countResult) => {
                 if (err) {
                     return res.status(500).json({ status: false, error: 'Internal server error' });
                 }
@@ -88,7 +88,7 @@ export const getAllEmployee = async (req, res) => {
                         return res.status(500).json({ status: false, error: 'Internal server error' });
                     }
                     else {
-                        const meta ={
+                        const meta = {
                             total: totalRows,
                             totalPages: Math.ceil(totalRows / pageSize),
                             pageNo: page,
@@ -97,7 +97,7 @@ export const getAllEmployee = async (req, res) => {
                     }
                 });
             })
-            
+
         }
 
     } catch (err) {
@@ -108,15 +108,18 @@ export const getAllEmployee = async (req, res) => {
 export const getSingleEmployee = async (req, res) => {
     const id = req.params.id;
     try {
-        const query = `SELECT ${fields} WHERE id = ?`;
+        const query = `SELECT ${fields} WHERE emp_id = ?`;
         db.query(query, [id], (err, result) => {
-            if (err) throw err;
-            res.send(result);
+            if (err) {
+                return res.status(500).json({ status: false, error: 'Internal server error' });
+            }
+            else {
+                res.status(200).json({ status: true, data: result });
+            }
         })
 
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ status: false, error: 'Internal server error' });
     }
 }
 export const updateEmployee = async (req, res) => {
@@ -139,12 +142,16 @@ export const updateEmployee = async (req, res) => {
         }
         query = query.slice(0, -1); // Removing last comma
 
-        query += " WHERE id=?"
+        query += " WHERE emp_id=?"
         updateValues.push(id);
 
         db.query(query, updateValues, (err, result) => {
-            if (err) throw err;
-            res.send(result);
+            if (err) {
+                return res.status(500).json({ status: false, error: 'Internal server error' });
+            }
+            else {
+                res.status(200).json({ status: true, data: result });
+            }
         })
 
     } catch (err) {
@@ -157,15 +164,19 @@ export const deleteEmployee = async (req, res) => {
     const id = req.params.id;
 
     try {
-        const query = 'DELETE FROM employees WHERE id = ?';
+        const query = 'DELETE FROM employees WHERE emp_id = ?';
         db.query(query, [id], (err, result) => {
-            if (err) throw err;
-            res.send(result);
+            if (err) {
+                return res.status(500).json({ status: false, error: 'Internal server error' });
+            }
+            else {
+                res.status(200).json({ status: true, data: result });
+            }
         })
 
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ status: true, error: 'Internal server error' });
     }
 }
 
@@ -191,54 +202,52 @@ export const deletFTPfile = async (req, res) => {
     const id = req.query.id
     const field = req.query.field;
     try {
-        console.log(filename, id, field)
         await deleteFromS3(filename).then((response) => {
             if (id !== 'undefined') {
-                db.query(`SELECT ${field} FROM employees WHERE id = ?`, [id], (err, result) => {
+                db.query(`SELECT ${field} FROM employees WHERE emp_id = ?`, [id], (err, result) => {
                     if (err) {
-                        console.log(err);
-                        res.sendStatus(500);
-                        return;
+                        return res.status(500).json({ status: false, error: 'Internal server error' });
                     }
-                    let files;
+                    else {
+                        let files;
 
-                    if (field === 'emp_image') {
-                        files = null;
-                    }
-                    else if (field === 'emp_cv') {
-                        files = null
-                    }
-                    else if (field === 'certificates') {
-                        files = JSON.parse(result[0].certificates);
-                        const newFiles = files.filter(f => f !== filename);
-                        const newFilesString = JSON.stringify(newFiles);
-                        files = newFilesString;
-                    }
-                    console.log(files)
-                    db.query(`UPDATE employees SET ${field} = ? WHERE id = ?`, [files, id], (err, result) => {
-                        if (err) {
-                            console.log(err);
-                            res.sendStatus(500);
-                            return;
+                        if (field === 'emp_image') {
+                            files = null;
                         }
-                        res.status(200).send(files);
-                    });
+                        else if (field === 'emp_cv') {
+                            files = null
+                        }
+                        else if (field === 'certificates') {
+                            files = JSON.parse(result[0].certificates);
+                            const newFiles = files.filter(f => f !== filename);
+                            const newFilesString = JSON.stringify(newFiles);
+                            files = newFilesString;
+                        }
+                        console.log(files)
+                        db.query(`UPDATE employees SET ${field} = ? WHERE emp_id = ?`, [files, id], (err, result) => {
+                            if (err) {
+                                return res.status(500).json({ status: false, error: 'Internal server error' });
+                            }
+                            else{
+                                res.status(200).json({ status: true, data: files });
+                            }
+                        });
+                    }
+
                 })
             }
             else {
-                res.send(response)
+                res.status(200).json({ status: true, data: response });
             }
 
         }).catch((err) => {
-            throw err;
+            return res.status(200).json({ status: false, error: 'Error in deleting file' });
         })
 
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ status: false, error: 'Internal server error' });
     }
 }
-
 
 
 export const getEmployeeByName = async (req, res) => {
@@ -247,12 +256,15 @@ export const getEmployeeByName = async (req, res) => {
     try {
         const query = `SELECT ${fields} WHERE emp_name = ?`;
         db.query(query, [name], (err, result) => {
-            if (err) throw err;
-            res.send(result);
+            if (err){
+                return res.status(500).json({ status: false, error: 'Internal server error' });
+            }
+            else{
+                res.status(200).json({ status: true, data: result });
+            }
         })
 
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ status:false, error: 'Internal server error' });
     }
 }

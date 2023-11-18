@@ -12,7 +12,7 @@ export const uplaodToS3 = async (path, originalname, mimetype)=> {
         region: process.env.BUCKET_REGION ,
     })
 
-    const newFilename = originalname + "-" +Date.now();
+    const newFilename = originalname + "-" + Date.now();
     await client.send(new PutObjectCommand({
         Bucket: process.env.BUCKET_NAME,
         Body: fs.readFileSync(path),
