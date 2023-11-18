@@ -42,7 +42,7 @@ const columns = [
       )
     },
   },
-  { field: 'id', headerName: 'Employee ID', width: 180 },
+  { field: 'emp_id', headerName: 'Employee ID', width: 180 },
   { field: 'department', headerName: 'Department', width: 200 },
   {
     field: 'email', headerName: 'Email', width: 200,
@@ -160,7 +160,7 @@ function Employees() {
       disableColumnMenu: true,
       renderCell: (params) => (
         <>
-          <Link to={`/employee/create/${params.row.id}`}>
+          <Link to={`/employee/create/${params.row.emp_id}`}>
             <Button aria-label="edit" style={{ margin: "0px 10px" }} className='punch bg-white'>
               <EditOutlined />
             </Button>
@@ -168,7 +168,7 @@ function Employees() {
           <Button
             aria-label="delete"
             className='punch bg-white'
-            onClick={() => handleDelete(params.row.id)}
+            onClick={() => handleDelete(params.row.emp_id)}
           >
             <DeleteOutlined />
           </Button>

@@ -51,7 +51,7 @@ function EmployeesForm() {
             const fetchData = async () => {
                 try {
                     const res = await axios.get(`http://localhost:8000/api/employee/get-single-employee/${id}`);
-                    const data = res.data[0];
+                    const data = res.data?.data[0];
                     data?.emp_image && data?.emp_image.length > 0 && setUploadedEmpImage(data?.emp_image);
                     data?.emp_cv && data?.emp_cv.length > 0 && setUploadedEmpCv(data?.emp_cv)
                     data?.certificates && data?.certificates.length > 0 && setUploadedEmpCertificates(JSON.parse(data?.certificates));
@@ -186,14 +186,14 @@ function EmployeesForm() {
 
             if (type === 'emp_img') {
                 form.setFieldsValue({ upload_emp_img: "" });
-                form.setFieldsValue({ emp_image: lableData[0].split('-')[0] });
-                setUploadedEmpImage(res.data);
+                form.setFieldsValue({ emp_image: lableData[0] });
+                setUploadedEmpImage(lableData[0]);
                 setLoading1(false)
             }
             else if (type === 'emp_cv') {
                 form.setFieldsValue({ upload_emp_cv: "" });
-                form.setFieldsValue({ emp_cv: lableData[0].split('-')[0] });
-                setUploadedEmpCv(res.data);
+                form.setFieldsValue({ emp_cv: lableData[0] });
+                setUploadedEmpCv(lableData[0]);
                 setLoading2(false)
             }
             else if (type === 'emp_certificates') {
@@ -235,13 +235,13 @@ function EmployeesForm() {
         axios.delete(`http://localhost:8000/api/employee/delete-ftp-file/${fname}?id=${id}&field=${field}`).then((res) => {
             if (type === 'emp_img') {
                 form.setFieldsValue({
-                    emp_image: res.data
+                    emp_image: res.data?.data
                 })
                 // setSelectedImage(null)
             }
             else if (type === 'emp_cv') {
                 form.setFieldsValue({
-                    emp_cv: res.data
+                    emp_cv: res.data?.data
                 })
             }
             if (type === 'emp_certificates') {
@@ -519,7 +519,10 @@ function EmployeesForm() {
                                                         }}
                                                     >
                                                         <FilePdfOutlined className='text-red-600 text-xl' />
-                                                        <div>{uploadedEmpImage.length> 20 ? uploadedEmpImage.slice(0,20) + '...' : uploadedEmpImage}</div>
+                                                        <div>{uploadedEmpImage.length > 20 ? 
+                                                            uploadedEmpImage.split('-')[0].slice(0,20) + '...' : 
+                                                            uploadedEmpImage.split('-')[0]}
+                                                        </div>
                                                         <FolderViewOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleView(uploadedEmpImage)} />
                                                         <DeleteOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleFileDelete(uploadedEmpImage, "emp_img", id, "emp_image")} />
                                                     </div>
@@ -552,7 +555,10 @@ function EmployeesForm() {
                                                         }}
                                                     >
                                                         <FilePdfOutlined className='text-red-600 text-xl' />
-                                                        <div>{uploadedEmpCv.length> 20 ? uploadedEmpCv.slice(0,20) + '...' : uploadedEmpCv}</div>
+                                                        <div>{uploadedEmpCv.length> 20 ? 
+                                                            uploadedEmpCv.split('-')[0].slice(0,20) + '...' : 
+                                                            uploadedEmpCv.split('-')[0]}
+                                                        </div>
                                                         <FolderViewOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleView(uploadedEmpCv)} />
                                                         <DeleteOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleFileDelete(uploadedEmpCv, "emp_cv", id, "emp_cv")} />
                                                     </div>
@@ -584,7 +590,10 @@ function EmployeesForm() {
                                                                 <Card style={{ marginTop: '10px', height: 50 }} key={fname}>
                                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '1rem' }}>
                                                                         <FilePdfOutlined className='text-red-600 text-xl' />
-                                                                        <div>{fname.length> 20 ? fname.slice(0,20) + '...' : fname}</div>
+                                                                        <div>{fname.length> 20 ? 
+                                                                            fname.split('-')[0].slice(0,20) + '...' : 
+                                                                            fname.split('-')[0]}
+                                                                        </div>
                                                                         <FolderViewOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleView(fname)} />
                                                                         <DeleteOutlined style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => handleFileDelete(fname, "emp_certificates", id, "certificates")} />
                                                                     </div>
